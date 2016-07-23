@@ -210,3 +210,6 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+/src/CuddlyUmbrella/Lexer.fs
+/src/CuddlyUmbrella/Parser.fs
+/src/CuddlyUmbrella/Parser.fsi
