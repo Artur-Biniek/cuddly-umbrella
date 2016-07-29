@@ -1,0 +1,18 @@
+﻿→
+
+ε
+
+
+
+
+program					→ fun_decl_list stmt_list
+fun_decl_list			→ fun_delc_list fun_decl | fun_decl | ε
+fun_decl				→ DEF ident ( params ) : type_spec compound_stmt
+type_spec				→ VOID | BOOL | INT | FLOAT | STRING
+params					→ params_list | ε
+params_list				→ params_list, param | param
+param					→ ident : type_spec
+stmt_list				→ stmt_list stmt | stmt
+stmt					→ ident ; | compund_stmt
+compound_stmt			→ { stmt_list }
+

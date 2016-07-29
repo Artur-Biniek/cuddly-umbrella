@@ -1,0 +1,27 @@
+﻿%{
+   
+%}
+
+
+
+%token IDENTIFIER
+
+// Keywords
+%token DEF RETURN
+
+%token <string>IDENT
+
+// Punctuation
+%token LPAREN RPAREN LBRACE RBRACE COLON SEMICOLON COMMA DBLQUOTE
+
+// Misc tokens
+%token EOF
+
+%start start
+%type < int > start
+
+%%
+
+start: program EOF { $1 }
+
+program: RETURN				{ 5 }        

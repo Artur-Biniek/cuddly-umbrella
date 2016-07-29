@@ -6,13 +6,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>df530bba-fd2f-45ea-aaf4-6a8d047ad721</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>CuddlyUmbrella</RootNamespace>
-    <AssemblyName>CuddlyUmbrella</AssemblyName>
+    <AssemblyName>CuddlyUmbrella.Compiler</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
-    <Name>CuddlyUmbrella</Name>
+    <Name>CuddlyUmbrella.Compiler</Name>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -63,11 +63,10 @@
       <OtherFlags>--unicode</OtherFlags>
     </FsLex>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Ast.fs" />
     <Compile Include="Parser.fsi" />
     <Compile Include="Parser.fs" />
     <Compile Include="Lexer.fs" />
-    <Compile Include="Program.fs" />
-    <None Include="App.config" />    
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
