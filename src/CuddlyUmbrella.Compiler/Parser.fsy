@@ -1,5 +1,7 @@
 ﻿%{
-   
+
+open CuddlyUmbrella.Compiler
+
 %}
 
 
@@ -10,6 +12,7 @@
 %token DEF RETURN
 
 %token <string>IDENT
+%token <string>TYPE_SPEC
 
 // Punctuation
 %token LPAREN RPAREN LBRACE RBRACE COLON SEMICOLON COMMA DBLQUOTE
@@ -18,10 +21,17 @@
 %token EOF
 
 %start start
-%type < int > start
+%type < CuddlyUmbrella.Compiler.Ast.Program > start
+%type < CuddlyUmbrella.Compiler.Ast.FunctionDefinition list > fun_decl_list
 
 %%
 
 start: program EOF { $1 }
 
-program: RETURN				{ 5 }        
+program:				  fun_decl_list stmt_list				{ ($1, $2) }
+fun_decl_list:			  /* empty */							{ List.empty<Ast.FunctionDefinition> }
+                        | fun_decl_list fun_decl				{ $1 @ [$2] }
+                        | fun_decl								{ [$1] }
+fun_decl:				IDENT									{ Ast.FunctionDefinition $1}
+stmt_list:				/* empty */							{ List.empty<Ast.Statement> }
+    

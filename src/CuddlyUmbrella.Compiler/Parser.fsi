@@ -10,10 +10,8 @@ type token =
   | SEMICOLON
   | COMMA
   | DBLQUOTE
-  | STRING of (string)
-  | BOOL of (bool)
-  | FLOAT of (float)
-  | INT of (int)
+  | TYPE_SPEC of (string)
+  | IDENT of (string)
   | DEF
   | RETURN
   | IDENTIFIER
@@ -27,10 +25,8 @@ type tokenId =
     | TOKEN_SEMICOLON
     | TOKEN_COMMA
     | TOKEN_DBLQUOTE
-    | TOKEN_STRING
-    | TOKEN_BOOL
-    | TOKEN_FLOAT
-    | TOKEN_INT
+    | TOKEN_TYPE_SPEC
+    | TOKEN_IDENT
     | TOKEN_DEF
     | TOKEN_RETURN
     | TOKEN_IDENTIFIER
@@ -40,6 +36,9 @@ type nonTerminalId =
     | NONTERM__startstart
     | NONTERM_start
     | NONTERM_program
+    | NONTERM_fun_decl_list
+    | NONTERM_fun_decl
+    | NONTERM_stmt_list
 /// This function maps tokens to integer indexes
 val tagOfToken: token -> int
 
@@ -51,4 +50,4 @@ val prodIdxToNonTerminal: int -> nonTerminalId
 
 /// This function gets the name of a token as a string
 val token_to_string: token -> string
-val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> ( int ) 
+val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> ( CuddlyUmbrella.Compiler.Ast.Program ) 
