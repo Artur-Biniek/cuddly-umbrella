@@ -22,6 +22,10 @@ type token =
   | IDENT of (string)
   | DEF
   | RETURN
+  | VAR
+  | IF
+  | THEN
+  | ELSE
   | IDENTIFIER
 type tokenId = 
     | TOKEN_EOF
@@ -45,6 +49,10 @@ type tokenId =
     | TOKEN_IDENT
     | TOKEN_DEF
     | TOKEN_RETURN
+    | TOKEN_VAR
+    | TOKEN_IF
+    | TOKEN_THEN
+    | TOKEN_ELSE
     | TOKEN_IDENTIFIER
     | TOKEN_end_of_input
     | TOKEN_error

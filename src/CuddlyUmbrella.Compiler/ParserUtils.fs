@@ -7,9 +7,12 @@ let private keywords_table =
     [
         "def", DEF;
         "return", RETURN;
+        "var", VAR;
+        "if", IF;
+        "then", THEN;
+        "else", ELSE;
 
     ] |> Map.ofList
-
 
 let private punctuations_table =
     [
@@ -23,7 +26,6 @@ let private punctuations_table =
         "\"", DBLQUOTE;
 
     ] |> Map.ofList
-
 
 let private operators_table =
     [
@@ -43,6 +45,7 @@ let private lookupLexemeInTokenTable (table : Map<string, Parser.token>) lexeme 
     match table.TryFind(lexeme) with
     | Some(token) -> token   
     | None -> failwith ("Lexeme not found in the table: " + lexeme)   
+
 
 let keywordOrIdentifierToken lexeme =
     match keywords_table.TryFind(lexeme) with   

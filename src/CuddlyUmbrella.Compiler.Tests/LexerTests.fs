@@ -11,33 +11,39 @@ let stringToTokens input =
     let tokens = Lexer.getAllTokens lexbuf
     tokens
 
+let mapToSimpleTestData (input: (string * Parser.token list) list) = 
+    input |> List.map (fun (a, b) -> TestCaseData(a).Returns(b @ [EOF]))
+
 
 [<Test>]
 [<TestCaseSource("correctIdentifierTestCases")>]
 let ``tokenizes identifiers correctly`` input = stringToTokens input
 
-
 [<Test>]
 let ``ignores spaces, tabs, and line endings``() =
     let tokens = stringToTokens "             \t   \t  \t   \t\t\r\n\t   \n"
     let areEqual = (tokens = [EOF]);
-
     Assert.That(areEqual)
-
 
 [<Test>]
 [<TestCaseSource("correctPunctuationsTestCases")>]
 let ``tokenizes punctuations correctly`` input = stringToTokens input
 
-
 [<Test>]
 [<TestCaseSource("correctOperatorsTestCases")>]
 let ``tokenizes operators correctly`` input = stringToTokens input
 
-
 [<Test>]
 [<TestCaseSource("correctTypesTestCases")>]
 let ``tokenizes type specificators correctly`` input = stringToTokens input
+
+[<Test>]
+[<TestCaseSource("correctKeywordsTestCases")>]
+let ``tokenizes keywords correctly`` input = stringToTokens input
+
+[<Test>]
+[<TestCaseSource("correctMixedTestCases")>]
+let ``tokenizes mixed parts correctly`` input = stringToTokens input
 
 
 let correctIdentifierTestCases = 
@@ -66,8 +72,7 @@ let correctIdentifierTestCases =
         "ab cdef ghijklmno12345",
         [IDENT("ab"); IDENT("cdef"); IDENT("ghijklmno12345")];
 
-    ] |> List.map (fun (a, b) -> TestCaseData(a).Returns(b @ [EOF]))
-
+    ] |> mapToSimpleTestData
 
 let correctPunctuationsTestCases = 
     [
@@ -99,8 +104,7 @@ let correctPunctuationsTestCases =
         ",:;(){}\"",
         [COMMA; COLON; SEMICOLON; LPAREN; RPAREN; LBRACE; RBRACE; DBLQUOTE]
 
-    ] |> List.map (fun (a, b) -> TestCaseData(a).Returns(b @ [EOF]))
-
+    ] |> mapToSimpleTestData
 
 let correctOperatorsTestCases = 
     [
@@ -140,9 +144,7 @@ let correctOperatorsTestCases =
         "-+=<=<>>=<<-",
         [MINUS; PLUS; EQ; LEQ; LT; GT; GEQ; LT; LARROW]
 
-
-    ] |> List.map (fun (a, b) -> TestCaseData(a).Returns(b @ [EOF]))
-
+    ] |> mapToSimpleTestData
 
 let correctTypesTestCases =
     [
@@ -171,4 +173,51 @@ let correctTypesTestCases =
         [TYPE_SPEC("void"); IDENT("voidvoid"); TYPE_SPEC("int"); IDENT("intvoidint"); IDENT("boolintvoid"); 
          TYPE_SPEC("bool"); IDENT("floatstring"); TYPE_SPEC("float"); TYPE_SPEC("string")];
 
-    ] |> List.map (fun (a, b) -> TestCaseData(a).Returns(b @ [EOF]))    
+    ] |> mapToSimpleTestData
+
+let correctKeywordsTestCases =
+    [
+        // recognizes def keyword
+        "def def    def",
+        [DEF; DEF; DEF];
+
+        // recognizes return keyword
+        "return      return  return",
+        [RETURN; RETURN; RETURN];
+
+        // recognizes var keyword
+        "var               var  ",
+        [VAR; VAR]
+
+        // recognizes if keyword
+        "if   if   if",
+        [IF; IF; IF];
+
+        // recognizes then keyword
+        "then then        then",
+        [THEN; THEN; THEN];
+
+        // recognizes else keyword
+        "   else  else ",
+        [ELSE; ELSE];
+
+        // mixed keywords
+        "def return var if then else",
+        [DEF; RETURN; VAR; IF; THEN; ELSE];
+
+        // mixed not keywords
+        "Def reTurn vAr IF thEN ElsE",
+        [IDENT("Def"); IDENT("reTurn"); IDENT("vAr"); IDENT("IF"); IDENT("thEN"); IDENT("ElsE")]
+
+    ] |> mapToSimpleTestData
+
+let correctMixedTestCases =
+    [
+        "if i = j then return;",
+        [IF; IDENT("i"); EQ; IDENT("j"); THEN; RETURN; SEMICOLON];
+
+        "def factorial(x: int):int { return x; }",
+        [DEF; IDENT("factorial"); LPAREN; IDENT("x"); COLON; TYPE_SPEC("int"); RPAREN; COLON; TYPE_SPEC("int"); 
+         LBRACE; RETURN; IDENT("x"); SEMICOLON; RBRACE;]
+
+    ] |> mapToSimpleTestData

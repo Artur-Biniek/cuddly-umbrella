@@ -9,7 +9,7 @@ open CuddlyUmbrella.Compiler
 %token IDENTIFIER
 
 // Keywords
-%token DEF RETURN
+%token DEF RETURN VAR IF THEN ELSE
 
 %token <string>IDENT
 %token <string>TYPE_SPEC
