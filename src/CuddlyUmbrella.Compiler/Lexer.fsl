@@ -19,7 +19,8 @@ let digit       = ['0'-'9']
 let identifier  = char(char|digit|['_'])* 
 let whitespace  = [' ' '\t' ]
 let newline     = ('\n' | '\r' '\n')
-let punctuation = [',' ':' ';' '(' ')']
+let punctuation = [',' ':' ';' '(' ')' '{' '}' '"']
+let operator    = "+" | "-" | "=" | "<" | ">" | "<=" | ">="
 
 rule token = parse
 // --------------------------
@@ -27,6 +28,7 @@ rule token = parse
 | newline		{ newline lexbuf; token lexbuf }
 | identifier	{ ParserUtils.keywordOrIdentifierToken (lexeme lexbuf) }
 | punctuation	{ ParserUtils.punctuationToken (lexeme lexbuf) }
+| operator      { ParserUtils.operatorToken (lexeme lexbuf) }
 // --------------------------
 | _    			{ failwith ("Lexer error on lexeme: " + lexeme lexbuf) }
 | eof			{ EOF }

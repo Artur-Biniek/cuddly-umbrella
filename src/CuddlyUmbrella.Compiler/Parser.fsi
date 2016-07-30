@@ -2,6 +2,13 @@
 module Parser
 type token = 
   | EOF
+  | PLUS
+  | MINUS
+  | EQ
+  | LT
+  | GT
+  | LEQ
+  | GEQ
   | LPAREN
   | RPAREN
   | LBRACE
@@ -17,6 +24,13 @@ type token =
   | IDENTIFIER
 type tokenId = 
     | TOKEN_EOF
+    | TOKEN_PLUS
+    | TOKEN_MINUS
+    | TOKEN_EQ
+    | TOKEN_LT
+    | TOKEN_GT
+    | TOKEN_LEQ
+    | TOKEN_GEQ
     | TOKEN_LPAREN
     | TOKEN_RPAREN
     | TOKEN_LBRACE

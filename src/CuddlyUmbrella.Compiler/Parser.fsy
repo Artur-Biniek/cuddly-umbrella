@@ -17,6 +17,9 @@ open CuddlyUmbrella.Compiler
 // Punctuation
 %token LPAREN RPAREN LBRACE RBRACE COLON SEMICOLON COMMA DBLQUOTE
 
+// Operators
+%token PLUS MINUS EQ LT GT LEQ GEQ
+
 // Misc tokens
 %token EOF
 
