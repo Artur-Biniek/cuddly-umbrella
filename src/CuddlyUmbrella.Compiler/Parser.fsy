@@ -20,6 +20,9 @@ open CuddlyUmbrella.Compiler
 // Operators
 %token PLUS MINUS EQ LT GT LEQ GEQ
 
+// Assignment arror
+%token LARROW
+
 // Misc tokens
 %token EOF
 

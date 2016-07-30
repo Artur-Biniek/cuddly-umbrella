@@ -35,6 +35,11 @@ let ``tokenizes punctuations correctly`` input = stringToTokens input
 let ``tokenizes operators correctly`` input = stringToTokens input
 
 
+[<Test>]
+[<TestCaseSource("correctTypesTestCases")>]
+let ``tokenizes type specificators correctly`` input = stringToTokens input
+
+
 let correctIdentifierTestCases = 
     [
         // just small letters
@@ -115,7 +120,7 @@ let correctOperatorsTestCases =
         "< << <",
         [LT; LT; LT; LT]
 
-        // recognizes less than
+        // recognizes less than or equal
         "<= <=<= <=<=",
         [LEQ; LEQ; LEQ; LEQ; LEQ]
 
@@ -123,13 +128,47 @@ let correctOperatorsTestCases =
         "   >>   > >  ",
         [GT; GT; GT; GT]
 
-        // recognizes greater than
+        // recognizes greater than or equal
         ">=>=>= >=",
         [GEQ; GEQ; GEQ; GEQ]
 
+        // recognizes left arror (assignment)
+        "<- <- <-<-",
+        [LARROW; LARROW; LARROW; LARROW]
+
         // mixed operators
-        "-+=<=<>>=",
-        [MINUS; PLUS; EQ; LEQ; LT; GT; GEQ]
+        "-+=<=<>>=<<-",
+        [MINUS; PLUS; EQ; LEQ; LT; GT; GEQ; LT; LARROW]
 
 
     ] |> List.map (fun (a, b) -> TestCaseData(a).Returns(b @ [EOF]))
+
+
+let correctTypesTestCases =
+    [
+        // recognizes void
+        "void void",
+        [TYPE_SPEC("void"); TYPE_SPEC("void")];
+
+        // recognizes int
+        "int int int",
+        [TYPE_SPEC("int"); TYPE_SPEC("int"); TYPE_SPEC("int")];
+
+        // recognizes float
+        "float     float",
+        [TYPE_SPEC("float"); TYPE_SPEC("float")];
+
+        // recognizes bool
+        "bool   bool",
+        [TYPE_SPEC("bool"); TYPE_SPEC("bool")];
+
+        // recognizes string
+        "string string             string",
+        [TYPE_SPEC("string"); TYPE_SPEC("string"); TYPE_SPEC("string")];
+
+        // mixed types and identifiers
+        "void voidvoid int intvoidint boolintvoid bool floatstring float string",
+        [TYPE_SPEC("void"); IDENT("voidvoid"); TYPE_SPEC("int"); IDENT("intvoidint"); IDENT("boolintvoid"); 
+         TYPE_SPEC("bool"); IDENT("floatstring"); TYPE_SPEC("float"); TYPE_SPEC("string")];
+
+    ] |> List.map (fun (a, b) -> TestCaseData(a).Returns(b @ [EOF]))    

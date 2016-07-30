@@ -34,6 +34,7 @@ let private operators_table =
         ">", GT;
         "<=", LEQ;
         ">=", GEQ;
+        "<-", LARROW;
 
     ] |> Map.ofList
 

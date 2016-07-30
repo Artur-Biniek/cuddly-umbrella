@@ -2,6 +2,7 @@
 module Parser
 type token = 
   | EOF
+  | LARROW
   | PLUS
   | MINUS
   | EQ
@@ -24,6 +25,7 @@ type token =
   | IDENTIFIER
 type tokenId = 
     | TOKEN_EOF
+    | TOKEN_LARROW
     | TOKEN_PLUS
     | TOKEN_MINUS
     | TOKEN_EQ

@@ -17,15 +17,17 @@ let newline (lexbuf: LexBuffer<_>) = lexbuf.StartPos <- lexbuf.StartPos.NextLine
 let char        = ['a'-'z' 'A'-'Z']   
 let digit       = ['0'-'9']   
 let identifier  = char(char|digit|['_'])* 
+let type_spec   = "void" | "int" | "float" | "bool" | "string"
 let whitespace  = [' ' '\t' ]
 let newline     = ('\n' | '\r' '\n')
 let punctuation = [',' ':' ';' '(' ')' '{' '}' '"']
-let operator    = "+" | "-" | "=" | "<" | ">" | "<=" | ">="
+let operator    = "+" | "-" | "=" | "<" | ">" | "<=" | ">=" | "<-"
 
 rule token = parse
 // --------------------------
 | whitespace	{ token lexbuf }
 | newline		{ newline lexbuf; token lexbuf }
+| type_spec		{ TYPE_SPEC(lexeme lexbuf) }
 | identifier	{ ParserUtils.keywordOrIdentifierToken (lexeme lexbuf) }
 | punctuation	{ ParserUtils.punctuationToken (lexeme lexbuf) }
 | operator      { ParserUtils.operatorToken (lexeme lexbuf) }
