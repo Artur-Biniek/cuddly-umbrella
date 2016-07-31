@@ -42,6 +42,10 @@ let ``tokenizes type specificators correctly`` input = stringToTokens input
 let ``tokenizes keywords correctly`` input = stringToTokens input
 
 [<Test>]
+[<TestCaseSource("correctLiteralsTestCases")>]
+let ``tokenizes literals correctly`` input = stringToTokens input
+
+[<Test>]
 [<TestCaseSource("correctMixedTestCases")>]
 let ``tokenizes mixed parts correctly`` input = stringToTokens input
 
@@ -208,6 +212,35 @@ let correctKeywordsTestCases =
         // mixed not keywords
         "Def reTurn vAr IF thEN ElsE",
         [IDENT("Def"); IDENT("reTurn"); IDENT("vAr"); IDENT("IF"); IDENT("thEN"); IDENT("ElsE")]
+
+    ] |> mapToSimpleTestData
+
+
+let correctLiteralsTestCases =
+    [
+        // recognizes bools
+        "true false false true",
+        [BOOL(true); BOOL(false); BOOL(false); BOOL(true)];
+
+        // but only smallercase bools are literals
+        "True False truE FLASE",
+        [IDENT("True"); IDENT("False"); IDENT("truE"); IDENT("FLASE")];
+
+        // recognizes ints
+        "0 1   2 34 89",
+        [INT(0); INT(1); INT(2); INT(34); INT(89)];
+
+        // does not include minus in integer literal
+        "-4 -45",
+        [MINUS; INT(4); MINUS; INT(45)];
+
+        // recognizes floats
+        "1.0 14.56    87.234",
+        [FLOAT(1.0f); FLOAT(14.56f); FLOAT(87.234f)];
+
+        // does not include minus in float literals
+        "-123.456",
+        [MINUS; FLOAT(123.456f)]
 
     ] |> mapToSimpleTestData
 

@@ -14,6 +14,10 @@ open CuddlyUmbrella.Compiler
 %token <string>IDENT
 %token <string>TYPE_SPEC
 
+%token <System.Boolean>BOOL
+%token <System.Int32>INT
+%token <System.Single>FLOAT
+
 // Punctuation
 %token LPAREN RPAREN LBRACE RBRACE COLON SEMICOLON COMMA DBLQUOTE
 
