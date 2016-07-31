@@ -215,3 +215,4 @@ ModelManifest.xml
 /src/CuddlyUmbrella/Parser.fsi
 /src/CuddlyUmbrella.Compiler/Lexer.fs
 /src/CuddlyUmbrella.Compiler/Parser.fs
+/src/CuddlyUmbrella.Compiler/Parser.fsi
