@@ -3,6 +3,7 @@
 module Lexer
 
 open Microsoft.FSharp.Text.Lexing
+open System.Text
 open CuddlyUmbrella.Compiler
 open Parser
 
@@ -34,12 +35,23 @@ rule token = parse
 | bool                  { BOOL(System.Boolean.Parse(lexeme lexbuf)) }
 | int                   { INT(System.Int32.Parse(lexeme lexbuf)) }
 | float                 { FLOAT(System.Single.Parse(lexeme lexbuf)) }
+| '"'                   { string (new StringBuilder(20)) lexbuf }
 | identifier            { ParserUtils.keywordOrIdentifierToken (lexeme lexbuf) }
 | punctuation           { ParserUtils.punctuationToken (lexeme lexbuf) }
 | operator              { ParserUtils.operatorToken (lexeme lexbuf) }
 // --------------------------
 | _                     { failwith ("Lexer error on lexeme: " + lexeme lexbuf) }
 | eof                   { EOF }
+
+
+and string builder = parse
+| '"'                   { STRING(builder.ToString()) }
+| '\\' '\\'             { string (builder.Append("\\")) lexbuf }
+| '\\' '\"'             { string (builder.Append("\"")) lexbuf }
+| [^ '"' '\\']+         { string (builder.Append(lexeme lexbuf)) lexbuf }
+| _                     { failwith ("Lexer error on lexeme: "+ lexeme lexbuf) }
+| eof                   { failwith ("Unterminated string literal") }
+
 
 {
 

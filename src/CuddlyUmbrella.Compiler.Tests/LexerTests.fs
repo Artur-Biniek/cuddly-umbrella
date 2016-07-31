@@ -100,13 +100,9 @@ let correctPunctuationsTestCases =
         "{{ } }   { {}",
         [LBRACE; LBRACE; RBRACE; RBRACE; LBRACE; LBRACE; RBRACE];
 
-        // recognizes double quotes
-        "\" \"\" \"    \"",
-        [DBLQUOTE; DBLQUOTE; DBLQUOTE; DBLQUOTE; DBLQUOTE];
-
         // mixed punctiations
-        ",:;(){}\"",
-        [COMMA; COLON; SEMICOLON; LPAREN; RPAREN; LBRACE; RBRACE; DBLQUOTE]
+        ",:;(){}",
+        [COMMA; COLON; SEMICOLON; LPAREN; RPAREN; LBRACE; RBRACE]
 
     ] |> mapToSimpleTestData
 
@@ -242,6 +238,22 @@ let correctLiteralsTestCases =
         "-123.456",
         [MINUS; FLOAT(123.456f)]
 
+        // can parse string literal
+        """   "string"   """,
+        [STRING("string")];
+
+        // recognizes backslash escape for backslash
+        """ "\\" """,
+        [STRING("\\")];
+
+        // recognizes bacslash escape for double quote
+        """  "--\"--" """,
+        [STRING("--\"--")];
+
+        // some more string literals to recognize
+        """ "first"   "second"   "third"  "\"special\"" "c:\\windows\\user\\" """,
+        [STRING("first"); STRING("second"); STRING("third"); STRING("\"special\""); STRING("c:\\windows\\user\\")];
+
     ] |> mapToSimpleTestData
 
 let correctMixedTestCases =
@@ -251,6 +263,9 @@ let correctMixedTestCases =
 
         "def factorial(x: int):int { return x; }",
         [DEF; IDENT("factorial"); LPAREN; IDENT("x"); COLON; TYPE_SPEC("int"); RPAREN; COLON; TYPE_SPEC("int"); 
-         LBRACE; RETURN; IDENT("x"); SEMICOLON; RBRACE;]
+         LBRACE; RETURN; IDENT("x"); SEMICOLON; RBRACE];
+
+         "var g: string <- \"Hello World!\"",
+         [VAR; IDENT("g"); COLON; TYPE_SPEC("string"); LARROW; STRING("Hello World!")]
 
     ] |> mapToSimpleTestData

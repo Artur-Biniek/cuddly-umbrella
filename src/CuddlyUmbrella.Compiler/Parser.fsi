@@ -18,6 +18,7 @@ type token =
   | SEMICOLON
   | COMMA
   | DBLQUOTE
+  | STRING of (System.String)
   | FLOAT of (System.Single)
   | INT of (System.Int32)
   | BOOL of (System.Boolean)
@@ -48,6 +49,7 @@ type tokenId =
     | TOKEN_SEMICOLON
     | TOKEN_COMMA
     | TOKEN_DBLQUOTE
+    | TOKEN_STRING
     | TOKEN_FLOAT
     | TOKEN_INT
     | TOKEN_BOOL

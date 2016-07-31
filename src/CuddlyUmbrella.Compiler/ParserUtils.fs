@@ -23,7 +23,6 @@ let private punctuations_table =
         ")", RPAREN;
         "{", LBRACE;
         "}", RBRACE;
-        "\"", DBLQUOTE;
 
     ] |> Map.ofList
 

@@ -17,6 +17,7 @@ open CuddlyUmbrella.Compiler
 %token <System.Boolean>BOOL
 %token <System.Int32>INT
 %token <System.Single>FLOAT
+%token <System.String>STRING
 
 // Punctuation
 %token LPAREN RPAREN LBRACE RBRACE COLON SEMICOLON COMMA DBLQUOTE
@@ -31,8 +32,8 @@ open CuddlyUmbrella.Compiler
 %token EOF
 
 %start start
-%type < CuddlyUmbrella.Compiler.Ast.Program > start
-%type < CuddlyUmbrella.Compiler.Ast.FunctionDefinition list > fun_decl_list
+%type <CuddlyUmbrella.Compiler.Ast.Program> start
+%type <CuddlyUmbrella.Compiler.Ast.FunctionDefinition list> fun_decl_list
 
 %%
 
