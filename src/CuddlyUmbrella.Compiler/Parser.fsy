@@ -12,16 +12,13 @@ let stringToTypeSpec = function
 
 %}
 
-
-
-%token IDENTIFIER
-
 // Keywords
 %token DEF RETURN VAR IF THEN ELSE
 
 %token <string>IDENT
 %token <string>TYPE_SPEC
 
+// Types
 %token <System.Boolean>BOOL
 %token <System.Int32>INT
 %token <System.Single>FLOAT
@@ -46,13 +43,19 @@ let stringToTypeSpec = function
 
 %%
 
-program:				  fun_decl_list stmt_list				{ ($1, $2) }
-fun_decl_list:			  /* empty */							{ List.empty<Ast.FunctionDefinition> }
-                        | fun_decl_list fun_decl				{ $1 @ [$2] }
-                        | fun_decl								{ [$1] }
-fun_decl:				IDENT									{ Ast.FunctionDefinition $1}
-stmt_list:				/* empty */								{ List.empty<Ast.Statement> }
-                        | stmt_list stmt						{ $1 @ [$2]}
-                        | stmt									{ [$1] }
-stmt:					| VAR IDENT COLON TYPE_SPEC SEMICOLON   { Ast.VariableDeclaration($2, stringToTypeSpec $4) }
+program:                fun_decl_list stmt_list                 { ($1, $2) }
+
+fun_decl_list:          /* empty */                             { List.empty<Ast.FunctionDefinition> }
+                        | fun_decl_list fun_decl                { $1 @ [$2] }
+                        | fun_decl                              { [$1] }
+
+fun_decl:               IDENT                                   { Ast.FunctionDefinition $1}
+
+stmt_list:              /* empty */                             { List.empty<Ast.Statement> }
+                        | stmt_list stmt                        { $1 @ [$2]}
+                        | stmt                                  { [$1] }
+
+stmt:                   variable_decl                           { $1 }
+
+variable_decl:          VAR IDENT COLON TYPE_SPEC SEMICOLON     { Ast.VariableDeclaration($2, stringToTypeSpec $4) }
     

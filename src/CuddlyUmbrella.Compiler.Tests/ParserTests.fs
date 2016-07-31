@@ -41,11 +41,14 @@ let variableDefinitionsTestData =
         "var b: int;",
         ([], [VariableDeclaration("b", Int)]);
 
-        "var a: string;",
-        ([], [VariableDeclaration("a", String)]);
+        "var c: string;",
+        ([], [VariableDeclaration("c", String)]);
 
-        "var b: bool;",
-        ([], [VariableDeclaration("b", Bool)]);
+        "var d: bool;",
+        ([], [VariableDeclaration("d", Bool)]);
+
+        "var e: float;",
+        ([], [VariableDeclaration("e", Float)]);
 
 
     ] |> createTestData
