@@ -52,9 +52,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Content Include="packages.config" />
-    <Compile Include="AstTests.fs" />
     <Compile Include="LexerTests.fs" />
     <Content Include="App.config" />
+    <Compile Include="ParserTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsLexYacc.Runtime">

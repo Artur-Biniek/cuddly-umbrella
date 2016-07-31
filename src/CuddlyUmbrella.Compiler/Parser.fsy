@@ -2,6 +2,14 @@
 
 open CuddlyUmbrella.Compiler
 
+let stringToTypeSpec = function
+    | "void" -> Ast.Void
+    | "int" -> Ast.Int
+    | "float" -> Ast.Float
+    | "string" -> Ast.String
+    | "bool" -> Ast.Bool
+    | _ -> failwith "Unknown type specificator string"
+
 %}
 
 
@@ -31,18 +39,20 @@ open CuddlyUmbrella.Compiler
 // Misc tokens
 %token EOF
 
-%start start
-%type <CuddlyUmbrella.Compiler.Ast.Program> start
+%start program
+%type <CuddlyUmbrella.Compiler.Ast.Program> program
 %type <CuddlyUmbrella.Compiler.Ast.FunctionDefinition list> fun_decl_list
+%type <CuddlyUmbrella.Compiler.Ast.Statement list> stmt_list
 
 %%
-
-start: program EOF { $1 }
 
 program:				  fun_decl_list stmt_list				{ ($1, $2) }
 fun_decl_list:			  /* empty */							{ List.empty<Ast.FunctionDefinition> }
                         | fun_decl_list fun_decl				{ $1 @ [$2] }
                         | fun_decl								{ [$1] }
 fun_decl:				IDENT									{ Ast.FunctionDefinition $1}
-stmt_list:				/* empty */							{ List.empty<Ast.Statement> }
+stmt_list:				/* empty */								{ List.empty<Ast.Statement> }
+                        | stmt_list stmt						{ $1 @ [$2]}
+                        | stmt									{ [$1] }
+stmt:					| VAR IDENT COLON TYPE_SPEC SEMICOLON   { Ast.VariableDeclaration($2, stringToTypeSpec $4) }
     

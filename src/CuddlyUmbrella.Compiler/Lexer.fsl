@@ -13,8 +13,6 @@ let newline (lexbuf: LexBuffer<_>) = lexbuf.StartPos <- lexbuf.StartPos.NextLine
 
 }
 
-// Regular expressions
-
 let char        = ['a'-'z' 'A'-'Z']   
 let digit       = ['0'-'9']   
 let identifier  = char(char|digit|['_'])* 
@@ -27,15 +25,15 @@ let newline     = ('\n' | '\r' '\n')
 let punctuation = [',' ':' ';' '(' ')' '{' '}' '"']
 let operator    = "+" | "-" | "=" | "<" | ">" | "<=" | ">=" | "<-"
 
-rule token = parse
+rule tokenize = parse
 // --------------------------
-| whitespace            { token lexbuf }
-| newline               { newline lexbuf; token lexbuf }
+| whitespace            { tokenize lexbuf }
+| newline               { newline lexbuf; tokenize lexbuf }
 | type_spec             { TYPE_SPEC(lexeme lexbuf) }
 | bool                  { BOOL(System.Boolean.Parse(lexeme lexbuf)) }
 | int                   { INT(System.Int32.Parse(lexeme lexbuf)) }
 | float                 { FLOAT(System.Single.Parse(lexeme lexbuf)) }
-| '"'                   { string (new StringBuilder(20)) lexbuf }
+| '"'                   { string (new StringBuilder(16)) lexbuf }
 | identifier            { ParserUtils.keywordOrIdentifierToken (lexeme lexbuf) }
 | punctuation           { ParserUtils.punctuationToken (lexeme lexbuf) }
 | operator              { ParserUtils.operatorToken (lexeme lexbuf) }
@@ -45,10 +43,12 @@ rule token = parse
 
 
 and string builder = parse
+// --------------------------
 | '"'                   { STRING(builder.ToString()) }
 | '\\' '\\'             { string (builder.Append("\\")) lexbuf }
 | '\\' '\"'             { string (builder.Append("\"")) lexbuf }
 | [^ '"' '\\']+         { string (builder.Append(lexeme lexbuf)) lexbuf }
+// --------------------------
 | _                     { failwith ("Lexer error on lexeme: "+ lexeme lexbuf) }
 | eof                   { failwith ("Unterminated string literal") }
 
@@ -59,8 +59,8 @@ let getAllTokens lexbuf =
     let rec aux acc cur =
         match cur with
         | EOF -> acc @ [EOF]
-        | tok -> aux (acc @ [tok]) (token lexbuf)
+        | tok -> aux (acc @ [tok]) (tokenize lexbuf)
     
-    aux [] (token lexbuf)
+    aux [] (tokenize lexbuf)
 
 }

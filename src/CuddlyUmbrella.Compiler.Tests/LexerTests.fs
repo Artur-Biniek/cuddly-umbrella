@@ -1,4 +1,4 @@
-﻿module CuddlyUmbrella.Compiler.Tests.ParserTests
+﻿module CuddlyUmbrella.Compiler.Tests.LexerTests
 
 open CuddlyUmbrella.Compiler
 open Microsoft.FSharp.Text.Lexing
