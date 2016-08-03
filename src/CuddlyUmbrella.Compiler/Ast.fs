@@ -17,7 +17,7 @@ and TypeSpec =
     | Bool
 
  and Expression =
-    | IdentExpression of Identifier
+    | IdentifierExpression of Identifier
     | LiteralExpression of Literal
 
 and Literal =

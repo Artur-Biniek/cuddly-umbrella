@@ -6,8 +6,8 @@ let stringToTypeSpec = function
     | "void" -> Ast.Void
     | "int" -> Ast.Int
     | "float" -> Ast.Float
-    | "string" -> Ast.String
     | "bool" -> Ast.Bool
+    | "string" -> Ast.String
     | _ -> failwith "Unknown type specificator string"
 
 %}
@@ -21,7 +21,7 @@ let stringToTypeSpec = function
 // Types
 %token <System.Boolean>BOOL
 %token <System.Int32>INT
-%token <System.Single>FLOAT
+%token <System.Single>FLOAT   
 %token <System.String>STRING
 
 // Punctuation
@@ -43,32 +43,40 @@ let stringToTypeSpec = function
 %type <CuddlyUmbrella.Compiler.Ast.Statement> variable_decl
 %type <CuddlyUmbrella.Compiler.Ast.Expression option> opt_expr
 
-
 %%
 
-program:                fun_decl_list stmt_list                 { ($1, $2) }
+program:                
+    | fun_decl_list stmt_list                              { ($1, $2) }
 
-fun_decl_list:          /* empty */                             { List.empty<Ast.FunctionDefinition> }
-                        | fun_decl_list fun_decl                { $1 @ [$2] }
-                        | fun_decl                              { [$1] }
+fun_decl_list:          
+    | /* empty */                                          { List.empty<Ast.FunctionDefinition> }
+    | fun_decl_list fun_decl                               { $1 @ [$2] }
+    | fun_decl                                             { [$1] }
 
-fun_decl:               IDENT                                   { Ast.FunctionDefinition $1}
+fun_decl:
+    | DEF IDENT                                            { Ast.FunctionDefinition $2 }
 
-stmt_list:              /* empty */                             { List.empty<Ast.Statement> }
-                        | stmt_list stmt                        { $1 @ [$2]}
-                        | stmt                                  { [$1] }
+stmt_list:
+    | /* empty */                                          { List.empty<Ast.Statement> }
+    | stmt_list stmt                                       { $1 @ [$2]}
+    | stmt                                                 { [$1] }
 
-stmt:                   variable_decl                                    { $1 }
+stmt:
+    | variable_decl                                        { $1 }
 
-variable_decl:          VAR IDENT COLON TYPE_SPEC opt_expr SEMICOLON     { Ast.VariableDeclaration($2, (stringToTypeSpec $4), $5) }
+variable_decl:
+    | VAR IDENT COLON TYPE_SPEC opt_expr SEMICOLON         { Ast.VariableDeclaration($2, (stringToTypeSpec $4), $5) }
 
-opt_expr:               /* empty */                                      { None }
-                        | LARROW expr                                    { Some($2) }
+opt_expr:
+    | /* empty */                                          { None }
+    | LARROW expr                                          { Some($2) }
 
-expr:                   literal_expr                                     { Ast.LiteralExpression($1) }
+expr: 
+    | literal_expr                                         { Ast.LiteralExpression($1) }
+    | IDENT                                                { Ast.IdentifierExpression($1) }
 
-literal_expr:           BOOL                                             { Ast.BoolLiteral($1) }
-                        | INT                                            { Ast.IntLiteral($1) }
-                        | FLOAT                                          { Ast.FloatLiteral($1) }
-                        | STRING                                         { Ast.StringLiteral($1) }
-    
+literal_expr:
+    | BOOL                                                 { Ast.BoolLiteral($1) }
+    | INT                                                  { Ast.IntLiteral($1) }
+    | FLOAT                                                { Ast.FloatLiteral($1) }
+    | STRING                                               { Ast.StringLiteral($1) }

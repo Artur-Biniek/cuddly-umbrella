@@ -51,26 +51,28 @@ let variableDefinitionsTestData =
         ([], [VariableDeclaration("e", Float, None)]);
 
         "var f: int <- 12;",
-        ([], [VariableDeclaration("f", Int, Some(LiteralExpression(IntLiteral(12))))])
+        ([], [VariableDeclaration("f", Int, Some(LiteralExpression(IntLiteral(12))))]);
 
         "var g: float <- 23.34;",
-        ([], [VariableDeclaration("g", Float, Some(LiteralExpression(FloatLiteral(23.34f))))])
+        ([], [VariableDeclaration("g", Float, Some(LiteralExpression(FloatLiteral(23.34f))))]);
 
         "var h: bool <- true;",
-        ([], [VariableDeclaration("h", Bool, Some(LiteralExpression(BoolLiteral(true))))])
+        ([], [VariableDeclaration("h", Bool, Some(LiteralExpression(BoolLiteral(true))))]);
 
         "var i: bool <- false;",
-        ([], [VariableDeclaration("i", Bool, Some(LiteralExpression(BoolLiteral(false))))])
+        ([], [VariableDeclaration("i", Bool, Some(LiteralExpression(BoolLiteral(false))))]);
 
         "var j: string <- \"Hello\";",
-        ([], [VariableDeclaration("j", String, Some(LiteralExpression(StringLiteral("Hello"))))])
+        ([], [VariableDeclaration("j", String, Some(LiteralExpression(StringLiteral("Hello"))))]);
 
         "var k: string <- \"Compiler\";",
-        ([], [VariableDeclaration("k", String, Some(LiteralExpression(StringLiteral("Compiler"))))])
+        ([], [VariableDeclaration("k", String, Some(LiteralExpression(StringLiteral("Compiler"))))]);
 
         "var l: string <- \"World!\";",
-        ([], [VariableDeclaration("l", String, Some(LiteralExpression(StringLiteral("World!"))))])
+        ([], [VariableDeclaration("l", String, Some(LiteralExpression(StringLiteral("World!"))))]);
 
+        "var m: int <- intvar;",
+         ([], [VariableDeclaration("m", Int, Some(IdentifierExpression("intvar")))]);
 
     ] |> createTestData
 

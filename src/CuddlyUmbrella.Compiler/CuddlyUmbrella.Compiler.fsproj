@@ -63,7 +63,7 @@
       <OtherFlags>--unicode</OtherFlags>
     </FsLex>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Ast.fs" />
+    <Compile Include="Ast.fs" />   
     <Compile Include="Parser.fsi" />
     <Compile Include="Parser.fs" />
     <Compile Include="ParserUtils.fs" />
