@@ -36,19 +36,40 @@ let ``parses variable declaratinos to ast``(rawString, expectedParsed) =
 let variableDefinitionsTestData =
     [
         "var a: int;",
-        ([], [VariableDeclaration("a", Int)]);
+        ([], [VariableDeclaration("a", Int, None)]);
 
         "var b: int;",
-        ([], [VariableDeclaration("b", Int)]);
+        ([], [VariableDeclaration("b", Int, None)]);
 
         "var c: string;",
-        ([], [VariableDeclaration("c", String)]);
+        ([], [VariableDeclaration("c", String, None)]);
 
         "var d: bool;",
-        ([], [VariableDeclaration("d", Bool)]);
+        ([], [VariableDeclaration("d", Bool, None)]);
 
         "var e: float;",
-        ([], [VariableDeclaration("e", Float)]);
+        ([], [VariableDeclaration("e", Float, None)]);
+
+        "var f: int <- 12;",
+        ([], [VariableDeclaration("f", Int, Some(LiteralExpression(IntLiteral(12))))])
+
+        "var g: float <- 23.34;",
+        ([], [VariableDeclaration("g", Float, Some(LiteralExpression(FloatLiteral(23.34f))))])
+
+        "var h: bool <- true;",
+        ([], [VariableDeclaration("h", Bool, Some(LiteralExpression(BoolLiteral(true))))])
+
+        "var i: bool <- false;",
+        ([], [VariableDeclaration("i", Bool, Some(LiteralExpression(BoolLiteral(false))))])
+
+        "var j: string <- \"Hello\";",
+        ([], [VariableDeclaration("j", String, Some(LiteralExpression(StringLiteral("Hello"))))])
+
+        "var k: string <- \"Compiler\";",
+        ([], [VariableDeclaration("k", String, Some(LiteralExpression(StringLiteral("Compiler"))))])
+
+        "var l: string <- \"World!\";",
+        ([], [VariableDeclaration("l", String, Some(LiteralExpression(StringLiteral("World!"))))])
 
 
     ] |> createTestData

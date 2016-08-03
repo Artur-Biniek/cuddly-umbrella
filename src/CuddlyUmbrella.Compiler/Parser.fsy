@@ -40,6 +40,9 @@ let stringToTypeSpec = function
 %type <CuddlyUmbrella.Compiler.Ast.Program> program
 %type <CuddlyUmbrella.Compiler.Ast.FunctionDefinition list> fun_decl_list
 %type <CuddlyUmbrella.Compiler.Ast.Statement list> stmt_list
+%type <CuddlyUmbrella.Compiler.Ast.Statement> variable_decl
+%type <CuddlyUmbrella.Compiler.Ast.Expression option> opt_expr
+
 
 %%
 
@@ -55,7 +58,17 @@ stmt_list:              /* empty */                             { List.empty<Ast
                         | stmt_list stmt                        { $1 @ [$2]}
                         | stmt                                  { [$1] }
 
-stmt:                   variable_decl                           { $1 }
+stmt:                   variable_decl                                    { $1 }
 
-variable_decl:          VAR IDENT COLON TYPE_SPEC SEMICOLON     { Ast.VariableDeclaration($2, stringToTypeSpec $4) }
+variable_decl:          VAR IDENT COLON TYPE_SPEC opt_expr SEMICOLON     { Ast.VariableDeclaration($2, (stringToTypeSpec $4), $5) }
+
+opt_expr:               /* empty */                                      { None }
+                        | LARROW expr                                    { Some($2) }
+
+expr:                   literal_expr                                     { Ast.LiteralExpression($1) }
+
+literal_expr:           BOOL                                             { Ast.BoolLiteral($1) }
+                        | INT                                            { Ast.IntLiteral($1) }
+                        | FLOAT                                          { Ast.FloatLiteral($1) }
+                        | STRING                                         { Ast.StringLiteral($1) }
     
