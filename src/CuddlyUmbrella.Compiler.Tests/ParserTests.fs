@@ -74,5 +74,11 @@ let variableDefinitionsTestData =
         "var m: int <- intvar;",
          ([], [VariableDeclaration("m", Int, Some(IdentifierExpression("intvar")))]);
 
+        "var n: float <- fun();",
+         ([], [VariableDeclaration("n", Float, Some(FunctionCallExpression("fun", [])))]);
+
+        "var o: bool <- fun2(1, b);",
+         ([], [VariableDeclaration("o", Bool, Some(FunctionCallExpression("fun2", [LiteralExpression(IntLiteral(1)); IdentifierExpression("b")])))]);
+
     ] |> createTestData
 

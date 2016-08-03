@@ -19,6 +19,7 @@ and TypeSpec =
  and Expression =
     | IdentifierExpression of Identifier
     | LiteralExpression of Literal
+    | FunctionCallExpression of Identifier * Expression list
 
 and Literal =
     | IntLiteral of System.Int32

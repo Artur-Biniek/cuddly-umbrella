@@ -38,10 +38,6 @@ let stringToTypeSpec = function
 
 %start program
 %type <CuddlyUmbrella.Compiler.Ast.Program> program
-%type <CuddlyUmbrella.Compiler.Ast.FunctionDefinition list> fun_decl_list
-%type <CuddlyUmbrella.Compiler.Ast.Statement list> stmt_list
-%type <CuddlyUmbrella.Compiler.Ast.Statement> variable_decl
-%type <CuddlyUmbrella.Compiler.Ast.Expression option> opt_expr
 
 %%
 
@@ -49,15 +45,15 @@ program:
     | fun_decl_list stmt_list                              { ($1, $2) }
 
 fun_decl_list:          
-    | /* empty */                                          { List.empty<Ast.FunctionDefinition> }
+    | /* empty */                                          { [] }
     | fun_decl_list fun_decl                               { $1 @ [$2] }
     | fun_decl                                             { [$1] }
 
 fun_decl:
-    | DEF IDENT                                            { Ast.FunctionDefinition $2 }
+    | DEF IDENT SEMICOLON                                  { Ast.FunctionDefinition $2 }
 
 stmt_list:
-    | /* empty */                                          { List.empty<Ast.Statement> }
+    | /* empty */                                          { [] }
     | stmt_list stmt                                       { $1 @ [$2]}
     | stmt                                                 { [$1] }
 
@@ -74,9 +70,15 @@ opt_expr:
 expr: 
     | literal_expr                                         { Ast.LiteralExpression($1) }
     | IDENT                                                { Ast.IdentifierExpression($1) }
+    | IDENT LPAREN arg_list RPAREN                         { Ast.FunctionCallExpression($1, $3) }
 
 literal_expr:
     | BOOL                                                 { Ast.BoolLiteral($1) }
     | INT                                                  { Ast.IntLiteral($1) }
     | FLOAT                                                { Ast.FloatLiteral($1) }
     | STRING                                               { Ast.StringLiteral($1) }
+
+arg_list:
+    | /* empty */                                          { [] }
+    | expr                                                 { [$1] }
+    | arg_list COMMA expr                                  { $1 @ [$3] }
