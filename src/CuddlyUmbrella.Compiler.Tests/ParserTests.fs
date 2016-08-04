@@ -93,7 +93,24 @@ let variableDefinitionsTestData =
          ([], [VariableDeclaration("n", Float, Some(FunctionCallExpression("fun", [])))]);
 
         "var o: bool <- fun2(1, b);",
-         ([], [VariableDeclaration("o", Bool, Some(FunctionCallExpression("fun2", [LiteralExpression(IntLiteral(1)); IdentifierExpression("b")])))]);
+         (
+            [], 
+            [
+                VariableDeclaration(
+                    "o", 
+                    Bool, 
+                    Some(
+                        FunctionCallExpression(
+                            "fun2", 
+                            [
+                                LiteralExpression(IntLiteral(1));
+                                 IdentifierExpression("b")
+                            ]
+                        )
+                    )
+                )
+            ]
+         );
 
     ] |> createProgramTestData
 
@@ -112,30 +129,92 @@ let expressionsTestData =
         LiteralExpression(BoolLiteral(true));
 
         "false",
-         LiteralExpression(BoolLiteral(false));
+        LiteralExpression(BoolLiteral(false));
 
-         "sum(1, giveTwo(), variableThree)",
-         FunctionCallExpression("sum", [LiteralExpression(IntLiteral(1)); 
-                                        FunctionCallExpression("giveTwo", []); 
-                                        IdentifierExpression("variableThree")]);
+        "sum(1, giveTwo(), variableThree)",
+        FunctionCallExpression(
+            "sum", 
+            [
+                LiteralExpression(IntLiteral(1)); 
+                FunctionCallExpression(
+                    "giveTwo", 
+                    []
+                ); 
+                IdentifierExpression("variableThree")
+            ]
+        );
 
         "3 + 4",
-        BinaryExpression(LiteralExpression(IntLiteral(3)), Add, LiteralExpression(IntLiteral(4)));
+        BinaryExpression(
+            LiteralExpression(IntLiteral(3)), 
+            Add, 
+            LiteralExpression(IntLiteral(4))
+        );
 
         "12.0 -89.0",
-        BinaryExpression(LiteralExpression(FloatLiteral(12.0f)), Substract, LiteralExpression(FloatLiteral(89.0f)));
+        BinaryExpression(
+            LiteralExpression(FloatLiteral(12.0f)), 
+            Substract, 
+            LiteralExpression(FloatLiteral(89.0f))
+        );
 
         "5 * 6",
-        BinaryExpression(LiteralExpression(IntLiteral(5)), Multiply, LiteralExpression(IntLiteral(6)));
+        BinaryExpression(
+            LiteralExpression(IntLiteral(5)), 
+            Multiply, 
+            LiteralExpression(IntLiteral(6))
+        );
 
          "100 / 20",
-        BinaryExpression(LiteralExpression(IntLiteral(100)), Divide, LiteralExpression(IntLiteral(20)));
+        BinaryExpression(
+            LiteralExpression(IntLiteral(100)), 
+            Divide, 
+            LiteralExpression(IntLiteral(20))
+        );
 
         "345 + 10 * 30",
-        BinaryExpression(LiteralExpression(IntLiteral(345)), Add, BinaryExpression(LiteralExpression(IntLiteral(10)), Multiply, LiteralExpression(IntLiteral(30))));
+        BinaryExpression(
+            LiteralExpression(IntLiteral(345)), 
+            Add, 
+            BinaryExpression(
+                LiteralExpression(IntLiteral(10)), 
+                Multiply, 
+                LiteralExpression(IntLiteral(30))
+            )
+        );
 
         "987 - 65 / 43",
-        BinaryExpression(LiteralExpression(IntLiteral(987)), Substract, BinaryExpression(LiteralExpression(IntLiteral(65)), Divide, LiteralExpression(IntLiteral(43))));
+        BinaryExpression(
+            LiteralExpression(IntLiteral(987)), 
+            Substract, 
+            BinaryExpression(
+                LiteralExpression(IntLiteral(65)), 
+                Divide, 
+                LiteralExpression(IntLiteral(43))
+            )
+        );
 
+        "10 * 30 + 40",
+        BinaryExpression(
+            BinaryExpression(
+                LiteralExpression(IntLiteral(10)),
+                Multiply, 
+                LiteralExpression(IntLiteral(30))
+            ),
+            Add, 
+            LiteralExpression(IntLiteral(40))
+        );
+
+        "10 / 30 - 40",
+        BinaryExpression(
+            BinaryExpression(
+                LiteralExpression(IntLiteral(10)), 
+                Multiply, 
+                LiteralExpression(IntLiteral(30))
+            ), 
+            Add, 
+            LiteralExpression(IntLiteral(40))
+        );
 
     ] |> createExpressionTestData
+
