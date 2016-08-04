@@ -310,5 +310,24 @@ let expressionsTestData =
             )
         );
 
+
+        "1 + (2 + (3 + (4 + 5)))",
+        BinaryExpression(
+            LiteralExpression(IntLiteral(1)),
+            Add,
+            BinaryExpression(
+                LiteralExpression(IntLiteral(2)),
+                Add,
+                BinaryExpression(
+                    LiteralExpression(IntLiteral(3)),
+                    Add,
+                    BinaryExpression(
+                        LiteralExpression(IntLiteral(4)),
+                        Add,
+                        LiteralExpression(IntLiteral(5))
+                    )
+                )
+            )
+        )
     ] |> createExpressionTestData
 
