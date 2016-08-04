@@ -30,6 +30,8 @@ let private operators_table =
     [
         "+", PLUS;
         "-", MINUS;
+        "*", MULTIPLY;
+        "/", DIVIDE;
         "=", EQ;
         "<", LT;
         ">", GT;

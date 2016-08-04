@@ -4,7 +4,6 @@ open CuddlyUmbrella.Compiler
 open CuddlyUmbrella.Compiler.Ast
 open Microsoft.FSharp.Text.Lexing
 open NUnit.Framework
-open Parser
 
 
 let stringToAst input =
@@ -12,8 +11,16 @@ let stringToAst input =
     let ast = Parser.program Lexer.tokenize lexbuf
     ast
 
-let createTestData lst =
+let stringToExpression input =
+    let lexbuf = LexBuffer<_>.FromString input
+    let expression = Parser.expression Lexer.tokenize lexbuf
+    expression
+
+let createProgramTestData lst =
     lst |> List.map (fun (str, par:Program) -> new TestCaseData(str, par))
+
+let createExpressionTestData lst =
+    lst |> List.map (fun (str, par:Expression) -> new TestCaseData(str, par))
 
 [<Test>]
 let ``parses empty string to empty program ast``() =
@@ -29,6 +36,14 @@ let ``parses empty string to empty program ast``() =
 let ``parses variable declaratinos to ast``(rawString, expectedParsed) =
 
     let ast = rawString |> stringToAst
+    
+    Assert.True((expectedParsed = ast))
+
+[<Test>]
+[<TestCaseSource("expressionsTestData")>]
+let ``parses expressions to ast``(rawString, expectedParsed) =
+
+    let ast = rawString |> stringToExpression
     
     Assert.True((expectedParsed = ast))
 
@@ -80,5 +95,47 @@ let variableDefinitionsTestData =
         "var o: bool <- fun2(1, b);",
          ([], [VariableDeclaration("o", Bool, Some(FunctionCallExpression("fun2", [LiteralExpression(IntLiteral(1)); IdentifierExpression("b")])))]);
 
-    ] |> createTestData
+    ] |> createProgramTestData
 
+let expressionsTestData =
+    [
+        "4",
+        LiteralExpression(IntLiteral(4));
+
+        "123.0",
+        LiteralExpression(FloatLiteral(123.0f));
+
+        "\"that is some string!\"",
+        LiteralExpression(StringLiteral("that is some string!"));
+
+        "true",
+        LiteralExpression(BoolLiteral(true));
+
+        "false",
+         LiteralExpression(BoolLiteral(false));
+
+         "sum(1, giveTwo(), variableThree)",
+         FunctionCallExpression("sum", [LiteralExpression(IntLiteral(1)); 
+                                        FunctionCallExpression("giveTwo", []); 
+                                        IdentifierExpression("variableThree")]);
+
+        "3 + 4",
+        BinaryExpression(LiteralExpression(IntLiteral(3)), Add, LiteralExpression(IntLiteral(4)));
+
+        "12.0 -89.0",
+        BinaryExpression(LiteralExpression(FloatLiteral(12.0f)), Substract, LiteralExpression(FloatLiteral(89.0f)));
+
+        "5 * 6",
+        BinaryExpression(LiteralExpression(IntLiteral(5)), Multiply, LiteralExpression(IntLiteral(6)));
+
+         "100 / 20",
+        BinaryExpression(LiteralExpression(IntLiteral(100)), Divide, LiteralExpression(IntLiteral(20)));
+
+        "345 + 10 * 30",
+        BinaryExpression(LiteralExpression(IntLiteral(345)), Add, BinaryExpression(LiteralExpression(IntLiteral(10)), Multiply, LiteralExpression(IntLiteral(30))));
+
+        "987 - 65 / 43",
+        BinaryExpression(LiteralExpression(IntLiteral(987)), Substract, BinaryExpression(LiteralExpression(IntLiteral(65)), Divide, LiteralExpression(IntLiteral(43))));
+
+
+    ] |> createExpressionTestData

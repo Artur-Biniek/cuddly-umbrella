@@ -23,7 +23,7 @@ let float       = digit+'.'digit+
 let whitespace  = [' ' '\t' ]
 let newline     = ('\n' | '\r' '\n')
 let punctuation = [',' ':' ';' '(' ')' '{' '}' '"']
-let operator    = "+" | "-" | "=" | "<" | ">" | "<=" | ">=" | "<-"
+let operator    = "+" | "-" | "*" | "/" | "=" | "<" | ">" | "<=" | ">=" | "<-"
 
 rule tokenize = parse
 // --------------------------
