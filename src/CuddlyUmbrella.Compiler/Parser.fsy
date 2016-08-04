@@ -42,18 +42,24 @@ let stringToTypeSpec = function
 %%
 
 program:                
-    | fun_decl_list stmt_list                              { ($1, $2) }
+    | fun_decl_block stmt_list_block                       { ($1, $2) }
 
-fun_decl_list:          
+fun_decl_block:          
     | /* empty */                                          { [] }
-    | fun_decl_list fun_decl                               { $1 @ [$2] }
+    | fun_decls                                            { $1 }
+
+fun_decls:
+    | fun_decls fun_decl                                   { $1 @ [$2] }
     | fun_decl                                             { [$1] }
 
 fun_decl:
     | DEF IDENT SEMICOLON                                  { Ast.FunctionDefinition $2 }
 
-stmt_list:
+stmt_list_block:
     | /* empty */                                          { [] }
+    | stmt_list                                            { $1 }
+
+stmt_list:
     | stmt_list stmt                                       { $1 @ [$2]}
     | stmt                                                 { [$1] }
 
