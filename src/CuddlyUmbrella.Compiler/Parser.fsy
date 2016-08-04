@@ -85,6 +85,7 @@ expression:
     | IDENT                                                { Ast.IdentifierExpression($1) }
     | fun_call                                             { $1 }
     | binary_expr                                          { $1 }
+    | LPAREN expression RPAREN                             { $2 }
 
 fun_call:
     | IDENT LPAREN arg_list RPAREN                         { Ast.FunctionCallExpression($1, $3) }

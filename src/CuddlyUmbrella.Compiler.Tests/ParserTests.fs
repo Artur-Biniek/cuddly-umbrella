@@ -209,11 +209,48 @@ let expressionsTestData =
         BinaryExpression(
             BinaryExpression(
                 LiteralExpression(IntLiteral(10)), 
-                Multiply, 
+                Divide, 
                 LiteralExpression(IntLiteral(30))
             ), 
-            Add, 
+            Substract, 
             LiteralExpression(IntLiteral(40))
+        );
+
+        "0 + (9 - 8)",
+        BinaryExpression(
+            LiteralExpression(IntLiteral(0)),
+            Add,
+            BinaryExpression(
+                LiteralExpression(IntLiteral (9)),
+                Substract,
+                LiteralExpression(IntLiteral(8))
+            )
+        );
+
+        "(0 + 9) - 8",
+        BinaryExpression(
+            BinaryExpression(
+                LiteralExpression(IntLiteral (0)),
+                Add,
+                LiteralExpression(IntLiteral(9))
+            ),           
+            Substract,
+            LiteralExpression(IntLiteral(8))
+        );
+
+        "((1 + 2) - ( 3 * 4))",
+        BinaryExpression(
+            BinaryExpression(
+                LiteralExpression(IntLiteral(1)),
+                Add,
+                LiteralExpression(IntLiteral(2))
+            ),
+            Substract,
+            BinaryExpression(
+                LiteralExpression(IntLiteral(3)),
+                Multiply,
+                LiteralExpression(IntLiteral(4))
+            )
         );
 
     ] |> createExpressionTestData
