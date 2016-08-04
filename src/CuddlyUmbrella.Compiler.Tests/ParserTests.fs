@@ -104,7 +104,64 @@ let variableDefinitionsTestData =
                             "fun2", 
                             [
                                 LiteralExpression(IntLiteral(1));
-                                 IdentifierExpression("b")
+                                IdentifierExpression("b")
+                            ]
+                        )
+                    )
+                )
+            ]
+         );
+
+         "var o: bool <- fun3(1, 4 / z);",
+         (
+            [], 
+            [
+                VariableDeclaration(
+                    "o", 
+                    Bool, 
+                    Some(
+                        FunctionCallExpression(
+                            "fun3", 
+                            [
+                                LiteralExpression(IntLiteral(1));
+                                BinaryExpression(
+                                    LiteralExpression(IntLiteral(4)),
+                                    Divide,
+                                    IdentifierExpression("z")    
+                                )
+                            ]
+                        )
+                    )
+                )
+            ]
+         );
+
+         "var o: bool <- fun4(1, nested(6 +4) / z);",
+         (
+            [], 
+            [
+                VariableDeclaration(
+                    "o", 
+                    Bool, 
+                    Some(
+                        FunctionCallExpression(
+                            "fun4", 
+                            [
+                                LiteralExpression(IntLiteral(1));
+                                BinaryExpression(
+                                    FunctionCallExpression(
+                                        "nested",
+                                        [
+                                            BinaryExpression(
+                                                LiteralExpression(IntLiteral(6)),
+                                                Add,
+                                                LiteralExpression(IntLiteral(4))
+                                            )
+                                        ]
+                                    ),
+                                    Divide,
+                                    IdentifierExpression("z")    
+                                )
                             ]
                         )
                     )
